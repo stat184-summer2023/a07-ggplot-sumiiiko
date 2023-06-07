@@ -21,12 +21,14 @@ You can access the data from the Capital Bikeshare web site. Doing this requires
 
 ```{r}
 library(tidyverse)
+library(esquisse)
 
 station_url <- "https://mdbeckman.github.io/dcSupplement/data/DC-Stations.csv"
 Stations <- readr::read_csv(station_url)
     
 trip_url <- "https://mdbeckman.github.io/dcSupplement/data/Trips-History-Data-2014-Q4-Small.rds"
 Trips <- readRDS(gzcon(url(trip_url)))
+esquisser(Trips)
 ```
 
 
@@ -106,23 +108,29 @@ You can use [Figure 18.3](https://dtkaplan.github.io/DataComputingEbook/project-
 ### Day of Year
 
 ```{r}
-### Your Code Here
+ggplot(Trips) + 
+  aes(x = lubridate::yday(sdate)) +
+  geom_histogram() 
 
 ```
 
 
 My observations here..... 
+*Observations*: The data collected reflectes a portion of the 365 days.The peak bike uses were at start of the data collection.
 
 
 ### Day of Week
 
 ```{r}
 ### Your Code Here
-
+ggplot(Trips) + 
+  aes(x = lubridate::wday(sdate)) +
+  geom_histogram()
 ```
 
 
 My observations here..... 
+*Observations*: Week 5 had the highest bike uses and Week 6 had the second highest bike uses. Week 7 had the lowest bike uses. 
 
 
 
@@ -130,23 +138,28 @@ My observations here.....
 
 ```{r}
 ### Your Code Here
-
+ggplot(Trips) +
+  aes(x = lubridate::hour(sdate)) +
+  geom_histogram()
 ```
 
 
 My observations here..... 
-
+*Observation*: The highest bike uses were are hour 17. There were multiple hours with zero bike uses. 
 
 
 ### Minute of Hour
 
 ```{r}
 ### Your Code Here
-
+ggplot(Trips) +
+  aes(x = lubridate::minute(sdate)) +
+  geom_histogram()
 ```
 
 
 My observations here..... 
+*Observation*: Within the minute period, also all the bikes were being used. The peak were around 50 second and the low were around 10 second.
 
 
 ## Question 3: Grouping
