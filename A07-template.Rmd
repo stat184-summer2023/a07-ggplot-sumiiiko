@@ -21,14 +21,12 @@ You can access the data from the Capital Bikeshare web site. Doing this requires
 
 ```{r}
 library(tidyverse)
-library(esquisse)
 
 station_url <- "https://mdbeckman.github.io/dcSupplement/data/DC-Stations.csv"
 Stations <- readr::read_csv(station_url)
     
 trip_url <- "https://mdbeckman.github.io/dcSupplement/data/Trips-History-Data-2014-Q4-Small.rds"
 Trips <- readRDS(gzcon(url(trip_url)))
-esquisser(Trips)
 ```
 
 
@@ -159,7 +157,7 @@ ggplot(Trips) +
 
 
 My observations here..... 
-*Observation*: Within the minute period, also all the bikes were being used. The peak were around 50 second and the low were around 10 second.
+*Observation*: Within the minute period, the bike uses never fell below 300. The peak were around 50 second and the low were around 10 second.
 
 
 ## Question 3: Grouping
@@ -169,10 +167,17 @@ Group the bike rentals by three variables: hour of the day, day of the week, and
 ```{r}
 ### My Code here
 
+Trips %>%
+  group_by(hours = lubridate::hour(sdate), days = lubridate::wday(sdate), client) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = hours, y = count, color = days)) +
+  geom_point(shape = "circle", size = 1) +
+  facet_wrap(vars(client))
+
 ```
 
 My comments here.....
-
+Registered bike user have a higher count in bike uses compared to casual bike users. There is a rise and dip in bike uses for both of the causal and registered around 10th hour mark to the 20th hour mark. Reistered bike uses were high around the 7.5 hour mark and 17.5 hour mark.
 
 ## Question 4: How Far? 
 
@@ -230,12 +235,7 @@ Our goal here is to recreate [Figure 18.5](https://dtkaplan.github.io/DataComput
 
 
 ```{r}
-### My code here
-
-```
-
-
-
+### My c    
 
 #### Extra Credit: Joining and Variable Names in R
 
